@@ -1,0 +1,12 @@
+# OS & IDE Files
+.DS_Store
+.vscode/
+.idea/
+*.suo
+
+# Logs & Cache
+node_modules/
+npm-debug.log*
+
+#NOTE: Do not ignore codevibe-reports/!
+#Your *.report.json file must be committed for grading.
