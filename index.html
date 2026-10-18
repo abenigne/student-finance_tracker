@@ -18,30 +18,30 @@
             <h1 class="site-title">CampusWallet</h1>
           </div>    
           <!--Button for the collapsible navigation-->
-          <button id="nav-toggle" class="nav-toggle-btn" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation menu"></button>
+          <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation ">
             <span class="hamburger-icon">☰</span> Menu  
         </button>
 
-        <nav id="nav-menu" class="nav-menu">
-            <ul class="nav-list">
-                <li><a href="#pulse-dashboard" class="nav-link">Dashboard</a></li>
-                <li><a href="#expense-form-section" class="nav-link">Add Expense</a></li>
-                <li><a href="#main-ledger" class="nav-link">History</a></li>           
-                <li><a href="#settings-section" class="nav-link">Settings</a></li>        
-                <li><a href="about-section" class="nav-link">About</a><li>
+        <nav id="primary-nav" class="primary-nav" aria-label="Main Navigation">
+            <ul>
+                <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
+                <li><a href="#log-expense" class="nav-link">Add Expense</a></li>
+                <li><a href="#transactions" class="nav-link">History</a></li>           
+                <li><a href="#settings" class="nav-link">Settings</a></li>        
+                <li><a href="#about" class="nav-link">About</a></li>
             </ul> 
         </nav>
     </div>
 </header>                
 
 <!--This is the main content area-->
-<main id="main-content" class="main-container">
+<main id="main-ledger" class="main-container">
   <!--this is for budget alerts-->
   <div id="aria-announcer" class="sr-only" aria-live="polite"></div>
 
   <!--Section: Dashboard Overview -->
-  <section id="pulse-dashboard" class="card selection">
-    <header class="sectio-header">
+  <section id="dashboard" class="card">
+    <header class="section-header">
       <h2>Spending Dashboard</h2>
        <p class="section-subtitle">A quick overview of your monthly student budget and spending activity.</p>
     </header>
@@ -67,7 +67,7 @@
   </section>
 
   <!--This is a form where we add or edit expenses-->
-  <section id="expense-form-section" class="card-selection">
+  <section id="log-expense" class="card">
      <header class="section-header">
         <h2> Log Expense</h2>
         <p class="section-subtitle">Record a new purchase or update an existing expense entry.</p> 
@@ -118,7 +118,7 @@
   </section>
 
   <!--This is a table of transaction history-->
-  <section id="main-ledger" class="card-selection">
+  <section id="transactions" class="card">
     <header class="section-header">
        <h2>Transaction history</h2>
        <p class="section-subtitle">Search records using regular expressions, sort by date or cost, and manage entries.</p>
@@ -165,7 +165,8 @@
   </section>
 
   <!--This section is about settings and backups-->
-  <section id="settings-section" class="card-section">  <header class="section-header">
+  <section id="settings" class="card"> 
+     <header class="section-header">
       <h2>Settings & Data Backup</h2>
       <p class="section-subtitle">Set your monthly budget limit, choose your currency, and export or import dat.</p>
     </header>
@@ -196,7 +197,7 @@
   </section>
 
   <!--This section is"About"-->
-  <section id="about-section" class="card-selection">
+  <section id="about" class="card">
     <h2>About Student Finance Tracker</h2>
     <p>CampusWallet is a student finance tracker built with vanilla JavaScript modules, designed to help university students monitor their expenses, manage budgets,and test regular expression capabilities.</p>
     <div class="contact-info">
@@ -209,9 +210,13 @@
 </main>
 
 <footer class="site-footer">
-   <p>&copy; 2026 Student Finance Tracker (CampusWallet)> Built with vanilla HTML, CSS, and ES Modules.</p>
+  <div class="footer-container">
+   <p> © 2026 Student Finance Tracker (CampusWallet)></p>
+   <p style="margin-top: 0.5rem;">
+      <a href="https://github.com/abenigne/student-finance_tracker" target="_blank" rel="noopener" class="footer-link">Github Repository</a>
+   </p>
+  </div>
 </footer>
- 
-<script type="module" src="scripts/app.js"></script>
+ <script type="module" src="scripts/app.js"></script>
 </body>
 </html>

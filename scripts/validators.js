@@ -29,7 +29,7 @@ export const Validators = {
  * This validates financial cost amounts using strict decimal regex.
  */
 validateAmount(amountStr) {
-  if (amountStr === '' || amountStr === null || amountStr ===undefined) {
+  if (amountStr === '' || amountStr === null || amountStr === undefined) {
     return { valid: false, message: 'Cost amount is required.'};
 }
 const stringVal = String(amountStr).trim();

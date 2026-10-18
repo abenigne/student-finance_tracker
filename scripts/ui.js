@@ -35,6 +35,8 @@ export const UIModule = {
     this.totalspentEl= document.getElementById('total-spent');
     this.budgetcapEl = document.getElementById('budget-cap');
     this.budgetProgressEl = document.getElementById('budget-progress');
+    this.navToggle = document.getElementById('nav-toggle');
+    this.primaryNav = document.getElementById('primary-nav');
   },
 
   //This binds user interaction event listeners.
@@ -46,6 +48,16 @@ export const UIModule = {
         State.setSearch(e.target.value, true);
       });
     }
+    //this validates the numbers as the user types.
+    if (this.amountInput) {
+      this.amountInput.addEventListener('input', () => {
+        const res = Validators.validateAmount(this.amountInput.value);
+        if (this.amountError) {
+           this.amountError.textContent = res.message;
+        }
+      });
+    }
+
     //This delegates delete and edit actions on Transaction Table
      if (this.tableBody) {
         this.tableBody.addEventListener('click', e => {
@@ -57,6 +69,13 @@ export const UIModule = {
               }
             }
         });
+    }
+
+    if (this.navToggle && this.primaryNav) {
+      this.navToggle.addEventListener('click', () => {
+        const isOpen = this.primaryNav.classList.toggle('open');
+        this.navToggle.setAttribute('aria-expanded', isOpen);
+      });
     }
 },
 //This validates and processes transaction form submission.
@@ -163,3 +182,4 @@ renderTable(records, searchQuery) {
 
 
   
+   
