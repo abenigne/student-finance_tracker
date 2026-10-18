@@ -44,8 +44,8 @@ export const UIModule = {
   bindEvents() {
     //Form Submission
     if (this.form) {
-      this.form.addEventListener('input', e => {
-        State.setSearch(e.target.value, true);
+      this.form.addEventListener('submit', e => {
+        e.preventDefault();
       });
     }
     //this validates the numbers as the user types.
@@ -90,29 +90,29 @@ handleformsubmit() {
 
   const validation = Validators.validateAll(formData);
 
-  //Display inline errors if validation fails
-  this.showErrors(validation.errors);
+  //This renders error messages under input fields
+  if(this.descError) this.descError.textContent = validation.errors.description;
+  if(this.amountError) this.amountError.textContent = validation.errors.amount;
+  if(this.dateError) this.dateError.textContent = validation.errors.date;
+  if(this.categoryError) this.categoryError.textContent = validation.errors.category; 
 
-  if(validation.isValid) {
-    State.addRecord(formData);
-    this.form.reset();
-    this.clearErrors();
+  //this blocks submission if invalid
+  if(!validation.isValid) {
+    return;  //this stops execution so invalid data is not saved
   }
-},
 
-//This displays the validation error messages under respective inputs.
-
-showErrors(errors) {
-  if(this.descError) this.descError.textContent = errors.description || '';
-  if(this.amountError) this.amountError.textContent = errors.amount || '';
-  if(this.dateError) this.dateError.textContent = errors.date || '';
-  if(this.categoryError) this.category.textContent = errors.category || ''; 
+  State.addRecord(formData);
+  this.form.reset();
+  this.clearErrors();
 },
 
 //This clears all validation error messages.
 
 clearErrors() {
-  this.showErrors({description: '', amount: '', date: '', category: ''});
+if (this.descError) this.descError.textContent = '';
+if(this.amountError) this.amountError.textContent = '';
+if(this.dateError) this.dateError.textContent = '';
+if(this.categoryError) this.categoryError.textContent = '';
 },
 
 // This masters function called reactively whenever State changes.
@@ -126,7 +126,7 @@ render(state) {
   });
   
   //2. Render statistics and summary cards
-  this.rendersummary(state.records);
+  this.renderSummary(state.records);
 
   //3. This renders transaction table
   this.renderTable(filteredRecords, state.searchQuery);

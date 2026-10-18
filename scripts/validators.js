@@ -32,13 +32,13 @@ validateAmount(amountStr) {
   if (amountStr === '' || amountStr === null || amountStr === undefined) {
     return { valid: false, message: 'Cost amount is required.'};
 }
-const stringVal = String(amountStr).trim();
-if (!AMOUNT_REGEX.test(stringVal)) {
-    return { valid: false, message: 'Invalid format. Enter a positive number with max 2 decimal places.'};
-}
+const val = String(amountStr).trim();
 const num = parseFloat(stringVal);
 if (isNaN(num) || num<=0) {
-    return { valid: false, message: 'Cost must be strictly greater than 0.'};
+    return { valid: false, message: 'Amount must be greater than 0.'};
+}
+if (!/^(0|[1-9]\d*) (\.\d{1,2})?$/.test(val)) {
+  return { valid: false, message: 'Enter a valid cost with up to 2 decimal places.'};
 }
 if (num > 1000000) {
     return { valid: false, message: 'Cost exceeds maximum allowable threshold.' };
@@ -53,20 +53,16 @@ validateDate(dateStr) {
   if (!dateStr || typeof dateStr!== 'string') {
     return { valid: false, message: 'Date is required.' };
   }
-  if (!DATE_REGEX.test(dateStr)) {
+  if (!/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01] $/.test(dateStr)) {
     return { valid: false, message: 'Invalid date format. Use YYYY-MM-DD.'};
   }
 
   // This verifies the real calendar date
-  const [year, month, day] = dateStr.split('-').map(Number);
-  const dateObj = new Date(year, month -1, day);
-  if (
-    dateObj.getFullYear() !== year ||
-    dateObj.getMonth() !== month -1 ||
-    dateObj.getDate() !==day
-  ) {
-    return { valid: false, message: 'Provided date does not exist in the calendar.'};
-    }
+  const inputDate = new Date(dateStr);
+  const today = new Date();
+  if (inputDate > today) {
+     return { valid: false, message: 'Future dates (e.g 2038) are not allowed.'};
+  }
     return { valid: true, message:''};
 },
 
