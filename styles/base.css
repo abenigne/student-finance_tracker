@@ -332,6 +332,16 @@ mark {
    border-radius: 4px;
    font-weight: 700;
 }
+ /*this is the github link in About section*/
+ .github-link {
+   color: var(--emerald, #059669);
+   font-weight: 700;
+   text-decoration: underline;
+ }
+
+ .github-link:hover {
+  color: #047857;
+ }
 
 /*this is for the footer*/
 .app-footer {
@@ -349,6 +359,20 @@ mark {
   font-weight: 600;
 }
 .footer-link:hover { text-decoration: underline; }
+
+.site-footer {
+  background-color: var(--bg-card, #ffffff);
+  border-top: 1px solid var(--border-color, #cbd5e1);
+  text-align: center;
+  padding: 1.5rem 1rem;
+  margin-top: auto;
+}
+
+.footer-text {
+  font-weight: 700;
+  color: var(--text-main, #0f172a);
+  font-size: 0.95rem;
+}
 /* this is for the responsive breakpoints(table, desktop)*/
 @media (min-width: 768px) {
   .nav-toggle {
