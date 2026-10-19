@@ -1,5 +1,5 @@
 # Student finance tracker - CampusWallet
-# It is a responsive, modular web application designed to help university students monitor their daily expenses, manage monthly budget limits, and test regular expressins.
+# It is a responsive, modular web application designed to help university students monitor their daily expenses, manage monthly budget limits, and test regular expressions.
 
 The key features are:
 
