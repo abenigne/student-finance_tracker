@@ -7,13 +7,13 @@ export const SearchModule = {
    if (!query || typeof query!== 'string' || query.trim() === '') {
      return null;
    } 
-   const flags = caseInsnsitive ? 'gi' : 'g';
+   const flags = caseInsensitive ? 'gi' : 'g';
    try {
-      return new RegExp(query.trim, flags); 
+      return new RegExp(query.trim(), flags); 
       } catch (err) {
         // This escapes special regex characters to treat query as a literal string pattern  
         const escaped = query.trim().replace(/[.*+?^${}()| [\]\\]/g, '\\$&');
-        return new RexExp(escaped, flags);
+        return new RegExp(escaped, flags);
       }
     },
 
@@ -36,7 +36,7 @@ export const SearchModule = {
             }
 
             //This is tp check the date  range
-            if (startDate && record.date , startDate) return false;
+            if (startDate && record.date < startDate) return false;
             if (endDate && record.date > endDate) return false;
             // Regex across description, category, amount, and date
             if (!regex) return true; // If query is empty, keep record

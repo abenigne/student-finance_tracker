@@ -33,11 +33,11 @@ validateAmount(amountStr) {
     return { valid: false, message: 'Cost amount is required.'};
 }
 const val = String(amountStr).trim();
-const num = parseFloat(stringVal);
+const num = parseFloat(val);
 if (isNaN(num) || num<=0) {
     return { valid: false, message: 'Amount must be greater than 0.'};
 }
-if (!/^(0|[1-9]\d*) (\.\d{1,2})?$/.test(val)) {
+if (!/^(0|[1-9]\d*)(\.\d{1,2})?$/.test(val)) {
   return { valid: false, message: 'Enter a valid cost with up to 2 decimal places.'};
 }
 if (num > 1000000) {
@@ -53,7 +53,7 @@ validateDate(dateStr) {
   if (!dateStr || typeof dateStr!== 'string') {
     return { valid: false, message: 'Date is required.' };
   }
-  if (!/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01] $/.test(dateStr)) {
+  if (!/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(dateStr)) {
     return { valid: false, message: 'Invalid date format. Use YYYY-MM-DD.'};
   }
 
@@ -65,6 +65,13 @@ validateDate(dateStr) {
   }
     return { valid: true, message:''};
 },
+validateCategory(category) {
+   if (!category || ! ALLOWED_CATEGORIES.includes(category)) {
+      return { valid: false, message: 'Please select a valid category.'};
+   }
+   return { valid: true, message: ''};
+   },
+
 
 /**
  * This will run all validation checks simultaneously and returns collective status.

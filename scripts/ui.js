@@ -13,6 +13,7 @@ export const UIModule = {
 
     //Subscribe UI to State changes so re-renders happen reactively
     State.subscribe(state => this.render(state));
+    this.render(State);
   },
 
   //This caches the key Dom elements for performance.
@@ -31,10 +32,15 @@ export const UIModule = {
     this.tableBody = document.getElementById('transactions-table-body');
     this.searchInput = document.getElementById('search-input');
     this.categoryFilter = document.getElementById('category-filter');
+    this.caseToggle = document.getElementById('search-case-toggle');
+    this.sortSelect = document.getElementById('sort-select');
 
     this.totalspentEl= document.getElementById('total-spent');
-    this.budgetcapEl = document.getElementById('budget-cap');
-    this.budgetProgressEl = document.getElementById('budget-progress');
+    this.budgetcapInput = document.getElementById('budget-cap-input');
+    this.currencySelect = document.getElementById('currency-select');
+    this.exportBtn = document.getElementById('btn-export-json');
+    this.importFile = document.getElementById('file-import-json');
+
     this.navToggle = document.getElementById('nav-toggle');
     this.primaryNav = document.getElementById('primary-nav');
   },
@@ -46,6 +52,7 @@ export const UIModule = {
     if (this.form) {
       this.form.addEventListener('submit', e => {
         e.preventDefault();
+        this.handleformsubmit();
       });
     }
     //this validates the numbers as the user types.
@@ -77,7 +84,72 @@ export const UIModule = {
         this.navToggle.setAttribute('aria-expanded', isOpen);
       });
     }
-},
+
+    //this is  live validation for description
+    if (this.descInput) {
+       this.descInput.addEventListener('input', () => {
+         const res = Validators.validateDescription(this.descInput.value);
+         if (this.descError) this.descError.textContent = res.message;
+        });
+      }
+    //live validation for amount
+    if (this.amountInput) {
+       this.amountInput.addEventListener('input', () => {
+        const res = Validators.validateAmount(this.amountInput.value);
+        if (this.amountError) this.amountError.textContent = res.message;
+       });
+    }
+    //live validation for date
+    if (this.dateInput) {
+       this.dateInput.addEventListener('change', () => {
+         const res = Validators.validateDate(this.dateInput.value);
+         if (this.dateError) this.dateError.textContent = res.message;
+        });
+    }
+    //this is for search input & case toggle
+    if (this.searchInput) {
+       this.searchInput.addEventListener('input', () => {
+         const ignoreCase = this.caseToggle ? this.caseToggle.checked : true;
+         State.setSearch(this.searchInput.value, ignoreCase);
+     });
+    }
+    if(this.caseToggle) {
+      this.caseToggle.addEventListener('change', () => {
+        const query = this.searchInput ? this.searchInput.value : '';
+        State.setSearch(query, this.caseToggle.checked);
+      });
+    }
+    //Sort select
+    if (this.sortSelect){
+       this.sortSelect.addEventListener('change', () => {
+        State.setSort(this.sortSelect.value);
+       });
+    }
+    //Budget Cap Input
+    if (this.budgetCapInput) {
+       this.budgetCapInput.addEventListener('input', () => {
+         State.setBudgetCap(this.budgetCapInput.value);
+       });
+    }
+    //currency select
+    if (this.currencySelect) {
+      this.currencySelect.addEventListener('change', () => {
+        State.setCurrency(this.currencySelect.value);
+      });
+    }
+    // Export JSON backup
+    if (this.exportBtn) {
+       this.exportBtn.addEventListener('click', () => {
+        this.handleExport();
+      });
+    }
+    //Importing JSON backup
+    if (this.importFile) {
+      this.importFile.addEventListener('change', e => {
+        this.handleImport(e);
+      });
+    }
+  },
 //This validates and processes transaction form submission.
 
 handleformsubmit() {
@@ -115,17 +187,59 @@ if(this.dateError) this.dateError.textContent = '';
 if(this.categoryError) this.categoryError.textContent = '';
 },
 
+handleExport() {
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(State.records, null, 2));
+  const  dlAnchorElem = document.createElement('a');
+  dlAnchorElem.setAttribute("href", dataStr);
+  dlAnchorElem.setAttribute("download", "campuswallet_backup.json")
+   document.body.appendChild(dlAnchorElem);
+   dlAnchorElem.click();
+   dlAnchorElem.remove();
+},
+
+handleImport(e) {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    try {
+      const imported = JSON.parse(event.target.result);
+      if (Array.isArray(imported)) {
+        State.importRecords(imported);
+        alert('Backup imported successfully!');
+      } else {
+        alert('Invalid backup file format.');
+      }
+    } catch (err) {
+      alert('Error parsing JSON file.');
+    }
+  };
+  reader.readAsText(file);
+},
+
 // This masters function called reactively whenever State changes.
 
 render(state) {
   // This filters records using SearchModule and state criteria
-  const filteredRecords = SearchModule.filteredRecords(state.records, {
+  let filteredRecords = SearchModule.filterRecords(state.records, {
    query: state.searchQuery,
    caseInsensitive: state.caseInsensitive,
-   category: state.categoryFilter
+   category: 'ALL'
   });
-  
-  //2. Render statistics and summary cards
+
+  //this applies sorting based on user selection.
+  filteredRecords.sort((a, b) => {
+     if (state.sortBy === 'date-desc') return new Date(b.date) - new Date(a.date);
+     if (state.sortBy === 'date-asc') return new Date(a.date) - new Date(b.date);
+     if (state.sortBy === 'amount-desc') return b.amount -a.amount;
+     if (state.sortBy === 'amount-asc') return a.amount-b.amount;
+     if (state.sortBy === 'desc-asc') return a.description.localeCompare(b.description);
+     if (state.sortBy ==='desc-desc') return b.description.localeCompare(a.description);
+     return 0;
+    
+   });
+ 
+   //2. Render statistics and summary cards
   this.renderSummary(state.records);
 
   //3. This renders transaction table
@@ -134,11 +248,25 @@ render(state) {
 
 //this updates financial summary metrics and progress indicators.
 
-renderSummmary(records) {
+renderSummary(records) {
   const totalSpent = records.reduce((sum, rec) => sum + Number(rec.amount), 0);
+  const totalRecords = records.length;
+  const budgetCap = State.budgetCap || 500;
+  const remaining = budgetCap - totalSpent;
 
   if(this.totalSpentEl) {
     this.totalSpentEl.textContent = `$${totalSpent.toFixed(2)}`;
+  }
+  
+  const statCountEl = document.getElementById('stat-count');
+  if (statCountEl) {
+    statCountEl.textContent = totalRecords;
+  }
+
+  const budgetStatusEl = document.getElementById('start-cap-status');
+  if (budgetStatusEl) {
+     budgetStatusEl.textContent = `$${Math.abs(remaining).toFixed(2)} ${remaining >=0 ? 'Left' : 'Over '
+     }`;
   }
 },
 
@@ -162,10 +290,10 @@ renderTable(records, searchQuery) {
 
     return `
       <tr>
-        <td>${highlightedDesc}</td>
-        <td>$${Number(rec.amount).toFixed(2)}</td>
-        <td><span class="badge category-${rec.category.toLowerCase()}">${highlightedCategory}</span>
         <td>${rec.date}</td>
+        <td>${highlightedDesc}</td>
+        <td><span class="badge category-${rec.category.toLowerCase()}">${highlightedCategory}</span>
+        <td>$${Number(rec.amount).toFixed(2)}</td>
         <td>
           <button class="btn-icon delete-btn" data-id="${rec.id}" aria-label="Delete transaction">🗑️</button>
         </td>

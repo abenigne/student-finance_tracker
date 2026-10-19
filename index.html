@@ -49,7 +49,7 @@
     <div class="stats-grid">
       <div class="stats-card">
         <span class="stat-label">TOTAL SPENT</span>
-        <span id="stat-total" class="stat-value">$0.00</span>
+        <span id="total-spent" class="stat-value">$0.00</span>
       </div>
       <div class="stat-card">
         <span class="stat-label">TOTAL RECORDS</span>
@@ -73,36 +73,36 @@
         <p class="section-subtitle">Record a new purchase or update an existing expense entry.</p> 
      </header>
 
-     <form id="expense-form" class="styled-form" novalidate>
+     <form id="transaction-form" class="styled-form" novalidate>
        <input type="hidden" id="record-id">
 
        <div class="form-group">
           <label for="input-desc">Description *</label>
-          <input type="text"id="input-desc" required placeholder="e.g., Manual Coding book">
+          <input type="text"id="description" required placeholder="e.g., Manual Coding book">
           <span id="description-error" class="error-msg" role="status"></span>
        </div>
 
        <div class="form-row">
          <div class="form-group">
-            <label for="input-amount">Amount ($) *</label>
-            <input type="number" step="0.01" id="input-amount" required placeholder="0.00"
+            <label for="amount">Amount ($) *</label>
+            <input type="number" step="0.01" id="amount" required placeholder="0.00">
             <span id="amount-error" class="error-msg" role="status"></span>
          </div>
           
          <div class="form-group">
-            <label for="input-date">Date *</label>
-            <input type="date" id="input-date" required>
+            <label for="date">Date *</label>
+            <input type="date" id="date" required>
             <span id="date-error" class="error-msg" role="status"></span>
          </div>
        </div>
      
        <div class="form-group">
-          <label for="input-category">Category *</label>
-          <select id="input-category" required>
+          <label for="category">Category *</label>
+          <select id="category" required>
             <option value="">Select category...</option>
             <option value="Food">Food</option>
             <option value="Books">Books</option>
-            <option value="Transport">Fees</option>
+            <option value="Transport">Transport</option>
             <option value="Entertainment">Entertainment</option>
             <option value="Fees">Fees</option>
             <option value="Other">Other</option>
@@ -179,7 +179,7 @@
 
         <div class="form-group">
           <label for="currency-select">Display Currency</label>
-          <select id="currency-selct">
+          <select id="currency-select">
              <option value="USD">USD ($)</option>
              <option value="EUR">EUR (€)</option>
              <option value="RWF">RWF(Frw)</option>
@@ -201,9 +201,9 @@
     <h2>About Student Finance Tracker</h2>
     <p>CampusWallet is a student finance tracker built with JavaScript modules, designed to help university students monitor their expenses, manage budgets, and test  their regular expression capabilities.</p>
     <div class="contact-info" style="margin-top: 1rem;">
-      <p><strong>Author:</strong>Benigne Akayesu</p>
-      <p><strong>Institution:</strong>ALU</p>
-      <p><strong>Github:</strong><a href="https://github.com/abenigne/student-finance_tracker" target="_blank" rel="noopener" class="footer-link">github.com/abenigne/student-finance-tracker</a></p>
+      <p><strong>Author: </strong>Benigne Akayesu</p>
+      <p><strong>Institution: </strong>ALU</p>
+      <p><strong>Github: </strong><a href="https://github.com/abenigne/student-finance_tracker" target="_blank" rel="noopener" class="footer-link"> Github repository</a></p>
     </div>
   </section>
 

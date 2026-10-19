@@ -31,29 +31,31 @@
         this.records = stored;
         this.notify();
     }
-
     //This registers a callback listener for reactive updates
-    subscripe(listener) {
-      this.listeners.push(listener);
+    subscribe(listener) {
+      if (typeof listener === 'function'){
+        this.listeners.push(listener);
+      }
     }
-    
     // This notifies all registered UI listeners of state changes
 
     notify() {
-      for (const listener of this.listeners) {
-        listener(this);
-      }
+      this.listeners.forEach(listener => listener(this));
     }
-
+     
+    setInitialRecords(records) {
+      this.records = records;
+      this.notify();
+    }
     // This for adding a new expense record
 
     addRecord(data) {
       const newRecord = {
-        id: `rec_${Date.now()}`,
+        id: 'rec_' + Date.now(),
         description: data.description.trim(),
         amount: parseFloat(data.amount),
         category: data.category,
-        date: data.date,
+        date:data.date,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
@@ -83,7 +85,7 @@
     // Deletes a record by ID
 
     deleteRecord(id) {
-       this.records = this.records.filter(rec => rec.id !==id);
+       this.records = this.records.filter(r => r.id !==id);
        this.persistAndNotify();
     }
     // This is used to set the monthly budget spending limit
@@ -94,7 +96,6 @@
     }
      
     //This sets the display the currency
-
     setCurrency(curr) {
         this.currency = curr;
         this.notify();
@@ -129,5 +130,6 @@
 export const State = new AppState();
 
 
-        
-    
+
+
+  
