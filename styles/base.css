@@ -34,7 +34,12 @@
   display: flex;
   flex-direction: column;
  }
-
+.site-title {
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
  /* A screen reader helpers and the skip link for accessibility*/
 .skip-link {
   position: absolute;

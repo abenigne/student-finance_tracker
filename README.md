@@ -1,29 +1,35 @@
-# Student Finance Tracker (CampusWallet)
-**Author:** Benigne Ingabire Akayesu  
-**Course:** Building Responsive UI (ALU - September 2026 Term)  
-**Theme:** Student Finance Tracker  
-**Live Deployment:** [CampusWallet GitHub Pages](https://abenigne.github.io/student-finance-tracker/)
+# Student finance tracker - CampusWallet
+# It is a responsive, modular web application designed to help university students monitor their daily expenses, manage monthly budget limits, and test regular expressins.
 
----
+The key features are:
 
-## M1: Specification, Wireframes & Architecture
+1. Spending Dashboard: Real time summary cards tracking total amount spent, total records and the remaining budget.
+2. Expense Management: Add, validate, and delete financial transactions.
+3. Regex search and Filtering: this filters transaction history using powerful regular expressions with a case-insensitive toggle.
+4. Multi-criteria sorting: sorts records instantly by date(oldest or newest), cost(high/low), or description(A-Z/Z-A)
+5. Settings and Data backup: it configures custom monthly budgets, choose currencies.
+6.Local persistence: automatically saves data to browser LocalStorage with an initial fallback to sample seed data
+(`seed.json`).
 
-### 1. Visual Layout & Component Wireframes
-The application is structured around four primary interactive views designed for seamless responsive scaling:
-* **Spending Pulse Dashboard:** Aggregates total expenditure, record counts, dominant spending category, and an interactive 7-day spending trend chart.
-* **Transaction Ledger:** A robust table that auto-transforms into stacked interactive cards on mobile viewports (<768px). Features real-time regex search with match highlighting and multi-criteria sorting.
-* **Expense Entry Form:** A clean input interface for logging or editing student expenses with instant inline regex validation feedback.
-* **Settings & Budget Hub:** Manages monthly budget targets with dynamic ARIA live region announcements, multi-currency conversion rates (USD, EUR, RWF), and JSON backup import/export round-trips.
+## The architecture of the application.
 
-### 2. Data Model Schema
-Each transaction record is stored with a unique identifier and ISO timestamps:
-```json
-{
-  "id": "rec_1728730000000",
-  "description": "Organic chemistry lab manual",
-  "amount": 89.99,
-  "category": "Books",
-  "date": "2026-10-14",
-  "createdAt": "2026-10-14T08:00:00.000Z",
-  "updatedAt": "2026-10-14T08:00:00.000Z"
-}
+*HTML 
+*CSS
+*Javascript:
+   *app.js: this is the application entry point.
+   *state.js: this is the central state management and reactive subscriptions.
+   *storage.js: handles localstorage and data persistence.
+   *ui.js: DOM mainpulation, event binding, and rendering ledgers.
+   "search.js: safe regex compilation and filters records.
+   *validators.js: this enforces strict input validation logic.
+
+
+   ##How to run locally
+
+   1. Clone or download this repository to your local machine:
+   (in your terminal write)
+    git clone https://github.com/abenigne/student-finance_tracker.git
+
+  2. Afer cloning, open your project folder in Visual Studio Code. 
+  3.Run the project using a liv server extension (such as Live Server in VS Code) or open index.html directly in your browser.
+    
